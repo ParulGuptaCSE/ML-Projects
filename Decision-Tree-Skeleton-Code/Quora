@@ -1,0 +1,79 @@
+
+public class Solution {
+    public int BalancedString(string s) {  
+       
+        int n = s.Length;
+        var charArr = new List<Char> {'Q','W','E','R'};
+        var stringArr = s.ToCharArray();
+        int count;
+        Dictionary<char, int> dict = new Dictionary<char, int>();
+        foreach(var ch in charArr)
+        {
+            count = 0;
+            foreach(var c in stringArr)
+            {
+                if(ch == c)
+                {
+                    count++;
+                }
+            }
+            
+            dict.Add(ch, count);
+        }    
+        int substringlength = 0;
+        Dictionary<char, int> diction = new Dictionary<char, int>();
+        foreach(var kv in dict)
+        {
+           
+            if(kv.Value > n/4)
+            {
+
+                diction.Add(kv.Key, kv.Value - (n/4));
+                substringlength = substringlength + kv.Value - (n/4);
+            }
+        }
+       Console.WriteLine("substringlength"+substringlength);
+        if(substringlength == 0)
+        {
+            return 0;
+        }
+        while(substringlength < n)
+        {
+        for(int i = 0; i <= n-substringlength; i++)
+        {
+            
+                //Console.WriteLine("s.Substring(i,substringlength)"+s.Substring(i,substringlength));
+            if(checkIfValidSubstring(s.Substring(i,substringlength), diction))
+            {
+                return substringlength;                
+            }            
+        }
+            substringlength++;
+    }
+        return substringlength;
+    }
+               
+               private bool checkIfValidSubstring(string str, Dictionary<char, int> diction)
+               {                 
+                   var charArr = str.ToCharArray();
+                   foreach(var kv in diction)
+                   {Console.WriteLine("kv.Key"+kv.Key);
+            Console.WriteLine("kv.Value"+kv.Value);
+                       
+                       int count =0;
+                       foreach(var c in charArr){
+                    if(c == kv.Key)
+                    {
+                     count++;   
+                    }                          
+                               
+                }
+                    if(count != kv.Value){
+                               return false;
+                           }
+                    
+                   }
+                
+                    return true;
+               }
+}
